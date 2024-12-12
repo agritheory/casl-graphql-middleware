@@ -1,0 +1,40 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_DB: testdb
+      POSTGRES_USER: testuser
+      POSTGRES_PASSWORD: testpass
+    ports:
+      - '5432:5432'
+    volumes:
+      # - pg_data:/var/lib/postgresql/data  # Commented out for ephemeral storage
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U testuser -d testdb']
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  postgraphile:
+    build:
+      context: ../../
+      dockerfile: docker/postgraphile/Dockerfile
+    environment:
+      DATABASE_URL: postgres://testuser:testpass@postgres:5432/testdb
+      NODE_ENV: development
+      SCHEMA: public
+      JWT_SECRET: your_jwt_secret_here
+    ports:
+      - '5000:5000'
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ../../src:/app/src
+      - ../../package.json:/app/package.json
+      - ../../pnpm-lock.yaml:/app/pnpm-lock.yaml
+      - ../../node_modules:/app/node_modules
+      - ../../docker:/app/docker
+# volumes:
+#   pg_data:

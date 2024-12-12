@@ -1,0 +1,57 @@
+{
+	"name": "casl-graphql-middleware",
+	"version": "1.0.0",
+	"description": "CASL authorization middleware for GraphQL servers",
+	"type": "module",
+	"main": "dist/index.js",
+	"types": "dist/index.d.ts",
+	"files": [
+		"dist"
+	],
+	"scripts": {
+		"dev:postgraphile": "cd docker/postgraphile && docker compose up --build",
+		"dev:nuxt": "cd docker/nuxt && docker compose up --build",
+		"build": "tsc",
+		"start": "node dist/index.js",
+		"lint": "eslint . --ext .ts",
+		"lint:fix": "eslint . --ext .ts --fix",
+		"format": "prettier --write \"src/**/*.ts\"",
+		"test": "vitest",
+		"test:coverage": "vitest run --coverage",
+		"prepublishOnly": "pnpm run build"
+	},
+	"keywords": [
+		"casl",
+		"graphql",
+		"authorization",
+		"middleware",
+		"postgraphile",
+		"nuxt"
+	],
+	"author": "",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/agritheory/casl-graphql-middleware.git"
+	},
+	"bugs": {
+		"url": "https://github.com/agritheory/casl-graphql-middleware/issues"
+	},
+	"homepage": "https://github.com/agritheory/casl-graphql-middleware#readme",
+	"engines": {
+		"node": ">=20.0.0"
+	},
+	"dependencies": {
+		"@casl/ability": "^6.7.2",
+		"@casl/prisma": "^1.5.0",
+		"graphql": "^16.9.0",
+		"graphql-tag": "^2.12.6"
+	},
+	"devDependencies": {
+		"@types/node": "^22.10.2",
+		"postgraphile": "^4.13.0",
+		"tsx": "^4.19.2",
+		"typescript": "^5.7.2"
+	},
+	"packageManager": "pnpm@9.15.0+sha512.76e2379760a4328ec4415815bcd6628dee727af3779aaa4c914e3944156c4299921a89f976381ee107d41f12cfa4b66681ca9c718f0668fa0831ed4c6d8ba56c"
+}
